@@ -1,0 +1,36 @@
+# Dockerfile.cloudrun
+# GCP Cloud Run deployment (amd64/linux)
+#
+# Cloud Run behavior:
+#   - Injects $PORT environment variable (default 8080)
+#   - Handles external TLS automatically (clients connect via wss://)
+#   - Container runs in ws:// mode internally (no --certfile needed)
+#
+# Build:
+#   docker build -f docker/Dockerfile.cloudrun -t sjit-term-relay .
+#
+# Local test:
+#   docker run -e PORT=8080 -p 8080:8080 sjit-term-relay
+#
+# Deploy to Cloud Run:
+#   gcloud run deploy sjit-term-relay \
+#     --image [REGION]-docker.pkg.dev/[PROJECT_ID]/sjit-term-relay/sjit-term-relay:latest \
+#     --platform managed \
+#     --region asia-northeast3 \
+#     --allow-unauthenticated
+
+FROM python:3.12-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install dependencies first (layer cache optimization)
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy server source
+COPY ws_relay_server.py .
+
+# Cloud Run injects $PORT — pass it to the server via --port
+# Default fallback: 8080
+CMD ["sh", "-c", "python ws_relay_server.py --host 0.0.0.0 --port ${PORT:-8080}"]

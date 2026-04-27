@@ -1,0 +1,22 @@
+# Dockerfile.rpi4
+# Raspberry Pi 4 local Docker deployment (arm64/linux)
+#
+# Build & run via deploy script:
+#   bash scripts/deploy_rpi.sh
+#
+# Manual build:
+#   docker build -f docker/Dockerfile.rpi4 -t rpi-term-relay .
+#
+# Manual run:
+#   docker run -d --name term-relay --restart=always -p 8766:8766 rpi-term-relay
+
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY ws_relay_server.py .
+
+CMD ["python", "ws_relay_server.py", "--host", "0.0.0.0", "--port", "8766"]

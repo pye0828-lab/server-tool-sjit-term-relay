@@ -1,0 +1,41 @@
+# 가상환경
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*$py.class
+
+# 배포 관련
+build/
+dist/
+*.egg-info/
+*.egg
+
+# 환경 변수
+.env
+.env.*
+
+# IDE
+.vscode/*
+!.vscode/launch.json
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# 로그
+*.log
+
+# 배포 이력 (로컬 전용)
+scripts/deploy_cloudrun-history.txt
+scripts/deploy_rpi-history.txt
+
+# Claude Code
+.claude/
