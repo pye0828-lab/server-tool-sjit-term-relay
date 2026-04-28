@@ -1,0 +1,9 @@
+# 기본: 텍스트 파일은 git이 판단 (autocrlf 영향 받음)
+* text=auto
+
+# sh → LF 고정 (Linux 실행 필수, autocrlf 무시)
+*.sh text eol=lf
+
+# cmd, bat → CRLF 고정 (Windows 실행 필수, autocrlf 무시)
+*.cmd text eol=crlf
+*.bat text eol=crlf
